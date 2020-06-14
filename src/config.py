@@ -11,7 +11,7 @@ path = "/home/"+user+"/.config"
 
 
 def exists():
-    """returns True or False wether Config exists or note"""
+    """returns True or False wether Config exists or not"""
     return os.path.isfile(path+"/yin_yang/yin_yang.json")
 
 
@@ -134,22 +134,6 @@ def write_config(config=config):
 
 def gtk_exists():
     return os.path.isfile(path+"/gtk-3.0/settings.ini")
-
-
-def get_enabled_plugins():
-    """returns a list of plugins which are activated"""
-    pass
-
-
-def get_light_time():
-    """returns the time which should toggle the lightMode"""
-    pass
-
-
-def get_dark_time():
-    """returns the time which should toggle the lightMode"""
-    pass
-
 
 def get_theme():
     return config["theme"]

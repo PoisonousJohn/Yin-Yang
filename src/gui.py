@@ -344,6 +344,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.dark_time.setEnabled(True)
             self.ui.light_time.setEnabled(True)
             yin_yang.start_daemon()
+        
         # sets the correct time based on config
         self.set_correct_time()
         # setting the correct buttons based on config "dark"  "light"

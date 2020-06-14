@@ -96,7 +96,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
     def sync_with_config(self):
         # sync config label with get the correct version
-        self.ui.version_label.setText("yin-yang: " + config.get_version())
+        self.ui.version_label.setText("yin-yang: " + config.get("version"))
         # syncing all fields and checkboxes with config
         # ---- KDE -----
         # reads out all kde themes and displays them inside a combobox
@@ -403,7 +403,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.light_time.setTime(light_time)
 
     def set_correct_buttons(self):
-        theme = config.get_theme()
+        theme = config.get("theme")
         if theme == "dark":
             self.ui.light_push.setEnabled(True)
             self.ui.dark_push.setEnabled(False)

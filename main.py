@@ -13,7 +13,7 @@ QtWidgets.QApplication.setAttribute(
 
 def toggle_theme():
     """Switch themes"""
-    theme = config.get_theme()
+    theme = config.get("theme")
     if theme == "dark":
         yin_yang.switch_to_light()
     elif theme == "light":

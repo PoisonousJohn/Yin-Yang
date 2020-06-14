@@ -31,7 +31,7 @@ def inplace_change(filename, old_string, new_string):
 
 
 def switch_to_light():
-    gtk_theme = config.get_gtk_light_theme()
+    gtk_theme = config.get("gtkLightTheme")
     gtk_path = path + "/gtk-3.0"
     with open(gtk_path+"/settings.ini", "r") as file:
         # search for the theme section and change it

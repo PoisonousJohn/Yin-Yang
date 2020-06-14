@@ -19,7 +19,7 @@ import pwd
 import datetime
 import subprocess
 from src import gui
-from src.plugins import kde, gtkkde, wallpaper, vscode, atom, gtk, firefox, gnome, kvantum
+from src.plugins import kde, gtkkde, wallpaper, vscode, atom, gtk, firefox, gnome, kvantum, userscripts
 from src import config
 
 
@@ -53,7 +53,8 @@ class Yang(threading.Thread):
             firefox.switch_to_light()
         if config.get("kvantumEnabled"):
             kvantum.switch_to_light()
-
+        if config.get("userscriptsEnabled"):
+            userscripts.switch_to_light()
 
 class Yin(threading.Thread):
     def __init__(self, thread_id):
@@ -83,6 +84,8 @@ class Yin(threading.Thread):
             firefox.switch_to_dark()
         if config.get("kvantumEnabled"):
             kvantum.switch_to_dark()
+        if config.get("userscriptsEnabled"):
+            userscripts.switch_to_dark()
 
 
 class Daemon(threading.Thread):
@@ -99,8 +102,6 @@ class Daemon(threading.Thread):
             if not config.is_scheduled():
                 config.update("running", False)
                 break
-
-            editable = config.get_config()
 
             theme = config.get("theme")
 

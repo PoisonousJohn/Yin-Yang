@@ -8,7 +8,7 @@ from suntime import Sun, SunTimeException
 # aliases for path to use later on
 user = pwd.getpwuid(os.getuid())[0]
 path = "/home/"+user+"/.config"
-
+version = "1.5"
 
 def exists():
     """returns True or False wether Config exists or not"""
@@ -76,53 +76,69 @@ pathlib.Path(path+"/yin_yang/userscripts/dark").mkdir(parents=True, exist_ok=Tru
 pathlib.Path(path+"/yin_yang/userscripts/light").mkdir(parents=True, exist_ok=True)
 
 # if there is no config generate a generic one
-config = {}
-config["version"] = "1.5"
-config["desktop"] = get_desktop()
-config["followSun"] = False
-config["latitude"] = ""
-config["longitude"] = ""
-config["schedule"] = False
-config["switchToDark"] = "20:00"
-config["switchToLight"] = "07:00"
-config["running"] = False
-config["theme"] = ""
-config["codeLightTheme"] = "Default Light+"
-config["codeDarkTheme"] = "Default Dark+"
-config["codeEnabled"] = False
-config["kdeLightTheme"] = "org.kde.breeze.desktop"
-config["kdeDarkTheme"] = "org.kde.breezedark.desktop"
-config["kdeEnabled"] = True
-config["gtkLightTheme"] = ""
-config["gtkDarkTheme"] = ""
-config["atomLightTheme"] = ""
-config["atomDarkTheme"] = ""
-config["atomEnabled"] = False
-config["gtkEnabled"] = False
-config["wallpaperLightTheme"] = ""
-config["wallpaperDarkTheme"] = ""
-config["wallpaperEnabled"] = False
-config["firefoxEnabled"] = False
-config["firefoxDarkTheme"] = "firefox-compact-dark@mozilla.org"
-config["firefoxLightTheme"] = "firefox-compact-light@mozilla.org"
-config["firefoxActiveTheme"] = "firefox-compact-light@mozilla.org"
-config["gnomeEnabled"] = False
-config["gnomeLightTheme"] = ""
-config["gnomeDarkTheme"] = ""
-config["kvantumEnabled"] = False
-config["kvantumLightTheme"] = ""
-config["kvantumDarkTheme"] = ""
-config["userscriptsEnabled"] = False
-config["userscripts"] = path+"/yin_yang/userscripts/"
+defaultConfig = {}
+defaultConfig["version"] = version
+defaultConfig["desktop"] = get_desktop()
+defaultConfig["followSun"] = False
+defaultConfig["latitude"] = ""
+defaultConfig["longitude"] = ""
+defaultConfig["schedule"] = False
+defaultConfig["switchToDark"] = "20:00"
+defaultConfig["switchToLight"] = "07:00"
+defaultConfig["running"] = False
+defaultConfig["theme"] = ""
+defaultConfig["codeLightTheme"] = "Default Light+"
+defaultConfig["codeDarkTheme"] = "Default Dark+"
+defaultConfig["codeEnabled"] = False
+defaultConfig["kdeLightTheme"] = "org.kde.breeze.desktop"
+defaultConfig["kdeDarkTheme"] = "org.kde.breezedark.desktop"
+defaultConfig["kdeEnabled"] = True
+defaultConfig["gtkLightTheme"] = ""
+defaultConfig["gtkDarkTheme"] = ""
+defaultConfig["atomLightTheme"] = ""
+defaultConfig["atomDarkTheme"] = ""
+defaultConfig["atomEnabled"] = False
+defaultConfig["gtkEnabled"] = False
+defaultConfig["wallpaperLightTheme"] = ""
+defaultConfig["wallpaperDarkTheme"] = ""
+defaultConfig["wallpaperEnabled"] = False
+defaultConfig["firefoxEnabled"] = False
+defaultConfig["firefoxDarkTheme"] = "firefox-compact-dark@mozilla.org"
+defaultConfig["firefoxLightTheme"] = "firefox-compact-light@mozilla.org"
+defaultConfig["firefoxActiveTheme"] = "firefox-compact-light@mozilla.org"
+defaultConfig["gnomeEnabled"] = False
+defaultConfig["gnomeLightTheme"] = ""
+defaultConfig["gnomeDarkTheme"] = ""
+defaultConfig["kvantumEnabled"] = False
+defaultConfig["kvantumLightTheme"] = ""
+defaultConfig["kvantumDarkTheme"] = ""
+defaultConfig["userscriptsEnabled"] = False
+defaultConfig["userscripts"] = path+"/yin_yang/userscripts/"
+defaultConfig["desktop"] = get_desktop()
 
+def write_config(config=defaultConfig):
+    """Write configuration"""
+    with open(path+"/yin_yang/yin_yang.json", 'w') as conf:
+        json.dump(config, conf, indent=4)
 
+def update(key, value):
+    """Update the value of a key in configuration"""
+    config[key] = value
+    write_config(config)
+
+def delete_old():
+    os.remove(path+"/yin_yang/yin_yang.json")
+    print("remove stuff")
+    write_config()
 
 if exists():
     # making config global for this module
     with open(path+"/yin_yang/yin_yang.json", "r") as conf:
         config = json.load(conf)
-
-config["desktop"] = get_desktop()
+    if version > config["version"]:
+        delete_old()
+else:
+    config = defaultConfig
 
 
 def get_config():
@@ -130,59 +146,8 @@ def get_config():
     return config
 
 
-def update(key, value):
-    """Update the value of a key in configuration"""
-    config[key] = value
-    write_config()
-
-
-def write_config(config=config):
-    """Write configuration"""
-    with open(path+"/yin_yang/yin_yang.json", 'w') as conf:
-        json.dump(config, conf, indent=4)
-
-
 def gtk_exists():
     return os.path.isfile(path+"/gtk-3.0/settings.ini")
-
-def get_theme():
-    return config["theme"]
-
-
-def get_kde_light_theme():
-    return config["kdeLightTheme"]
-
-
-def get_kde_dark_theme():
-    return config["kdeDarkTheme"]
-
-
-def get_kde_enabled():
-    return config["kdeEnabled"]
-
-
-def get_code_light_theme():
-    return config["codeLightTheme"]
-
-
-def get_code_dark_theme():
-    return config["codeDarkTheme"]
-
-
-def get_code_enabled():
-    return config["codeEnabled"]
-
-
-def get_gtk_light_theme():
-    return config["gtkLightTheme"]
-
-
-def get_gtk_dark_theme():
-    return config["gtkDarkTheme"]
-
-
-def get_gtk_enabled():
-    return config["gtkEnabled"]
 
 
 def get(key):
@@ -194,75 +159,4 @@ def is_scheduled():
     return config["schedule"]
 
 
-def get_version():
-    return config["version"]
 
-
-def kde_get_light_theme():
-    """Return the KDE light theme specified in the yin-yang config"""
-    return config["kdeLightTheme"]
-
-
-def kde_get_dark_theme():
-    """Return the KDE dark theme specified in the yin-yang config"""
-    return config["kdeDarkTheme"]
-
-
-def kde_get_checkbox():
-    return config["kdeEnabled"]
-
-
-def gtk_get_light_theme():
-    """Return the  GTK Light theme specified in the yin-yang config"""
-    return config["gtkLightTheme"]
-
-
-def gtk_get_dark_theme():
-    """Return the  GTK dark theme specified in the yin-yang config"""
-    return config["gtkDarkTheme"]
-
-
-def gtk_get_checkbox():
-    return config["gtkEnabled"]
-
-
-def code_get_light_theme():
-    """Return the code light theme specified in the yin-yang config"""
-    return config["codeLightTheme"]
-
-
-def code_get_dark_theme():
-    """Return the  code dark theme specified in the yin-yang config"""
-    return config["codeDarkTheme"]
-
-
-def code_get_checkbox():
-    return config["codeEnabled"]
-
-
-def gnome_get_light_theme():
-    """Return the  Gnome Shell Light theme specified in the yin-yang config"""
-    return config["gnomeLightTheme"]
-
-
-def gnome_get_dark_theme():
-    """Return the  Gnome Shell dark theme specified in the yin-yang config"""
-    return config["gnomeDarkTheme"]
-
-
-def gnome_get_checkbox():
-    return config["gnomeEnabled"]
-
-
-def kvantum_get_light_theme():
-    """Return the Kvantum Light theme specified in the yin-yang config"""
-    return config["kvantumLightTheme"]
-
-
-def kvantum_get_dark_theme():
-    """Return the Kvantum dark theme specified in the yin-yang config"""
-    return config["kvantumDarkTheme"]
-
-
-def kvantum_get_checkbox():
-    return config["kvantumEnabled"]

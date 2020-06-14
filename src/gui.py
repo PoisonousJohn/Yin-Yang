@@ -23,6 +23,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.sync_with_config()
         # register all the handler onClick functions ...
         self.register_handlers()
+        # hide platform related sections (gtk or kde)
+        self.hide_platform_section()
 
     def close_event(self, event):
         """Overwrite the function that gets called when window is closed"""
@@ -51,6 +53,10 @@ class SettingsWindow(QtWidgets.QMainWindow):
         config.update("atomDarkTheme", self.ui.atom_line_dark.text())
         config.update("atomEnabled", self.ui.atom_checkbox.isChecked())
 
+        config.update("kvantumLightTheme", self.ui.kvantum_line_light.text())
+        config.update("kvantumDarkTheme", self.ui.kvantum_line_dark.text())
+        config.update("kvantumEnabled", self.ui.kvantum_checkbox.isChecked())
+
         # showing the main window and hiding the current one
         self.hide()
         self.window = MainWindow()
@@ -61,12 +67,23 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ui.code_checkbox.toggled.connect(self.toggle_code_fields)
         self.ui.gtk_checkbox.toggled.connect(self.toggle_gtk_fields)
         self.ui.atom_checkbox.toggled.connect(self.toggle_atom_fields)
+        self.ui.kvantum_checkbox.toggled.connect(self.toggle_kvantum_fields)
         self.ui.wallpaper_button_light.clicked.connect(
             self.open_wallpaper_light)
         self.ui.wallpaper_button_dark.clicked.connect(self.open_wallpaper_dark)
         self.ui.wallpaper_checkbox.toggled.connect(
             self.toggle_wallpaper_buttons)
         self.ui.back_button.clicked.connect(self.save_and_exit)
+
+    def hide_platform_section(self):
+        # If we are on GTK we do not need to show KDE and Kvantum Fields
+        # If we are on KDE we do not need to show GnomeShell themes
+        if (config.get("desktop") == "kde"):
+            self.ui.gtk_shell_widget.hide()
+        
+        if (config.get("desktop") == "gtk"):
+            self.ui.kde_widget.hide()
+            self.ui.kvantum_widget.hide()
 
     def sync_with_config(self):
         # sync config label with get the correct version
@@ -111,6 +128,13 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ui.atom_checkbox.setChecked(config.get("atomEnabled"))
         self.ui.atom_line_light.setEnabled(config.get("atomEnabled"))
         self.ui.atom_line_dark.setEnabled(config.get("atomEnabled"))
+        # ----- Kvantum --------
+        self.ui.kvantum_line_light.setText(config.get("kvantumLightTheme"))
+        self.ui.kvantum_line_dark.setText(config.get("kvantumDarkTheme"))
+        self.ui.kvantum_checkbox.setChecked(config.get("kvantumEnabled"))
+        self.ui.kvantum_line_light.setEnabled(config.get("kvantumEnabled"))
+        self.ui.kvantum_line_dark.setEnabled(config.get("kvantumEnabled"))
+
 
     def open_wallpaper_light(self):
         file_name, _ = QFileDialog.getOpenFileName(
@@ -139,7 +163,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
             self.ui.kde_combo_light.setEnabled(False)
             self.ui.kde_combo_dark.setEnabled(False)
             self.ui.kde_checkbox.setChecked(False)
-            config.update("codeEnabled", False)
+            config.update("kdeEnabled", False)
 
     def get_kde_theme_names(self):
         """
@@ -244,6 +268,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ui.atom_line_light.setEnabled(checked)
         self.ui.atom_line_dark.setEnabled(checked)
         config.update("atomEnabled", checked)
+
+    def toggle_kvantum_fields(self):
+        checked = self.ui.kvantum_checkbox.isChecked()
+        self.ui.kvantum_line_light.setEnabled(checked)
+        self.ui.kvantum_line_dark.setEnabled(checked)
+        config.update("kvantumEnabled", checked)
 
     def toggle_wallpaper_buttons(self):
         checked = self.ui.wallpaper_checkbox.isChecked()

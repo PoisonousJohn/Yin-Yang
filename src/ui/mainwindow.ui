@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>360</height>
+    <height>380</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,13 +22,13 @@
   <property name="minimumSize">
    <size>
     <width>300</width>
-    <height>360</height>
+    <height>380</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>300</width>
-    <height>360</height>
+    <height>380</height>
    </size>
   </property>
   <property name="baseSize">
@@ -42,7 +42,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>/opt/yin-yang/src/ui/assets/yin-yang.svg</normaloff>/opt/yin-yang/src/ui/assets/yin-yang.svg</iconset>
+    <normaloff>../../../../../../opt/yin-yang/src/ui/assets/yin-yang.svg</normaloff>../../../../../../opt/yin-yang/src/ui/assets/yin-yang.svg</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -51,7 +51,7 @@
       <x>20</x>
       <y>50</y>
       <width>251</width>
-      <height>281</height>
+      <height>311</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -141,6 +141,13 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="followsun_radio_2">
+       <property name="text">
+        <string>follow sun</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QRadioButton" name="schedule_radio">

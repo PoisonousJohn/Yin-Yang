@@ -104,6 +104,7 @@ config["gnomeDarkTheme"] = ""
 config["kvantumEnabled"] = False
 config["kvantumLightTheme"] = ""
 config["kvantumDarkTheme"] = ""
+config["userscripts"] = ""
 
 
 if exists():

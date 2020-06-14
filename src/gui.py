@@ -49,6 +49,10 @@ class SettingsWindow(QtWidgets.QMainWindow):
         config.update("gtkDarkTheme", self.ui.gtk_line_dark.text())
         config.update("gtkEnabled", self.ui.gtk_checkbox.isChecked())
 
+        config.update("gnomeLightTheme", self.ui.gtk_shell_line_light.text())
+        config.update("gnomeDarkTheme", self.ui.gtk_shell_line_dark.text())
+        config.update("gnomeEnabled", self.ui.gtk_shell_checkbox.isChecked())
+
         config.update("atomLightTheme", self.ui.atom_line_light.text())
         config.update("atomDarkTheme", self.ui.atom_line_dark.text())
         config.update("atomEnabled", self.ui.atom_checkbox.isChecked())
@@ -292,6 +296,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ui.gtk_line_light.setEnabled(checked)
         self.ui.gtk_line_dark.setEnabled(checked)
         config.update("gtkEnabled", checked)
+    
+    def toggle_gtk_shell_fields(self):
+        checked = self.ui.gtk_shell_checkbox.isChecked()
+        self.ui.gtk_shell_line_light.setEnabled(checked)
+        self.ui.gtk_shell_line_dark.setEnabled(checked)
+        config.update("gnomeEnabled", checked)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -324,7 +334,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # connect the time change with the correct function
         self.ui.light_time.timeChanged.connect(self.time_changed)
         self.ui.dark_time.timeChanged.connect(self.time_changed)
-        self.ui.schedule_radio.toggled.connect(self.toggle_schedule_cliked)
+        self.ui.schedule_radio.toggled.connect(self.toggle_schedule_clicked)
+        
 
     def sync_with_config(self):
         # sets the scheduled button to be enabled or disabled
@@ -397,7 +408,7 @@ class MainWindow(QtWidgets.QMainWindow):
         config.update("switchToLight", l_hour + ":" + l_minute)
         config.update("switchToDark", d_hour + ":" + d_minute)
 
-    def toggle_schedule_cliked(self):
+    def toggle_schedule_clicked(self):
         checked = self.ui.schedule_radio.isChecked()
         config.update("schedule", checked)
         if checked:
@@ -406,3 +417,7 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.ui.dark_time.setEnabled(False)
             self.ui.light_time.setEnabled(False)
+        
+    def follow_sun_clicked(self):
+        checked = self.ui.followsun_radio.isChecked()
+        config.update("followSun", checked)

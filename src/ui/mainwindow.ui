@@ -143,7 +143,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QRadioButton" name="followsun_radio_2">
+      <widget class="QRadioButton" name="followsun_radio">
        <property name="text">
         <string>follow sun</string>
        </property>

@@ -50,6 +50,7 @@ def main():
 
         if config.get("schedule"):
             yin_yang.start_daemon()
+
         else:
             print("looks like you did not specified a time")
             print("You can use the gui with yin-yang -gui")

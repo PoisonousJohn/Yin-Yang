@@ -61,6 +61,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
         config.update("kvantumDarkTheme", self.ui.kvantum_line_dark.text())
         config.update("kvantumEnabled", self.ui.kvantum_checkbox.isChecked())
 
+        config.update("userscriptsEnabled", self.ui.userscripts_checkbox.isChecked())
+        config.update("userscripts", self.ui.userscripts_line_light.text())
+
         # showing the main window and hiding the current one
         self.hide()
         self.window = MainWindow()
@@ -72,6 +75,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ui.gtk_checkbox.toggled.connect(self.toggle_gtk_fields)
         self.ui.atom_checkbox.toggled.connect(self.toggle_atom_fields)
         self.ui.kvantum_checkbox.toggled.connect(self.toggle_kvantum_fields)
+        self.ui.userscripts_checkbox.toggled.connect(self.toggle_userscripts_fields)
         self.ui.wallpaper_button_light.clicked.connect(
             self.open_wallpaper_light)
         self.ui.wallpaper_button_dark.clicked.connect(self.open_wallpaper_dark)
@@ -84,14 +88,15 @@ class SettingsWindow(QtWidgets.QMainWindow):
         # If we are on KDE we do not need to show GnomeShell themes
         if (config.get("desktop") == "kde"):
             self.ui.gtk_shell_widget.hide()
-        
+
         if (config.get("desktop") == "gtk"):
             self.ui.kde_widget.hide()
             self.ui.kvantum_widget.hide()
+            config.update("kdeEnabled", False)
 
     def sync_with_config(self):
         # sync config label with get the correct version
-        self.ui.version_label.setText("yin-yang: v" + config.get_version())
+        self.ui.version_label.setText("yin-yang: " + config.get_version())
         # syncing all fields and checkboxes with config
         # ---- KDE -----
         # reads out all kde themes and displays them inside a combobox
@@ -138,7 +143,10 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ui.kvantum_checkbox.setChecked(config.get("kvantumEnabled"))
         self.ui.kvantum_line_light.setEnabled(config.get("kvantumEnabled"))
         self.ui.kvantum_line_dark.setEnabled(config.get("kvantumEnabled"))
-
+        # ----- Userscripts --------
+        self.ui.userscripts_line_light.setText(config.get("userscripts"))
+        self.ui.userscripts_line_light.setEnabled(config.get("userscriptsEnabled"))
+        self.ui.userscripts_checkbox.setChecked(config.get("userscriptsEnabled"))
 
     def open_wallpaper_light(self):
         file_name, _ = QFileDialog.getOpenFileName(
@@ -290,6 +298,12 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.ui.code_line_light.setEnabled(checked)
         self.ui.code_line_dark.setEnabled(checked)
         config.update("codeEnabled", checked)
+
+    
+    def toggle_userscripts_fields(self):
+        checked = self.ui.userscripts_checkbox.isChecked()
+        self.ui.userscripts_line_light.setEnabled(checked)
+        config.update("userscriptsEnabled", checked)
 
     def toggle_gtk_fields(self):
         checked = self.ui.gtk_checkbox.isChecked()

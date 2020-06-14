@@ -66,10 +66,18 @@ def set_sun_time():
 # generate path for yin-yang if there is none this will be skipped
 pathlib.Path(path+"/yin_yang").mkdir(parents=True, exist_ok=True)
 
+# generate path for yin-yang if there is none this will be skipped
+pathlib.Path(path+"/yin_yang/userscripts").mkdir(parents=True, exist_ok=True)
+
+# generate path for yin-yang if there is none this will be skipped
+pathlib.Path(path+"/yin_yang/userscripts/dark").mkdir(parents=True, exist_ok=True)
+
+# generate path for yin-yang if there is none this will be skipped
+pathlib.Path(path+"/yin_yang/userscripts/light").mkdir(parents=True, exist_ok=True)
 
 # if there is no config generate a generic one
 config = {}
-config["version"] = "2.0"
+config["version"] = "1.5"
 config["desktop"] = get_desktop()
 config["followSun"] = False
 config["latitude"] = ""
@@ -84,7 +92,7 @@ config["codeDarkTheme"] = "Default Dark+"
 config["codeEnabled"] = False
 config["kdeLightTheme"] = "org.kde.breeze.desktop"
 config["kdeDarkTheme"] = "org.kde.breezedark.desktop"
-config["kdeEnabled"] = False
+config["kdeEnabled"] = True
 config["gtkLightTheme"] = ""
 config["gtkDarkTheme"] = ""
 config["atomLightTheme"] = ""
@@ -104,7 +112,9 @@ config["gnomeDarkTheme"] = ""
 config["kvantumEnabled"] = False
 config["kvantumLightTheme"] = ""
 config["kvantumDarkTheme"] = ""
-config["userscripts"] = ""
+config["userscriptsEnabled"] = False
+config["userscripts"] = path+"/yin_yang/userscripts/"
+
 
 
 if exists():
